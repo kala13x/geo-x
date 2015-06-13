@@ -21,10 +21,17 @@ char* translate_alphabet(char * line);
 
 
 /* 
- * parse_basic_types - Parse basic types from line. 
- * Argument line is line which we want to parse.
+ * parse_includes - Parse include definitions from source.
+ * Argument line is line from source code we want to parse.
  */
-char* parse_basic_types(char * line);
+char* parse_includes(char *line);
+
+
+/* 
+ * parse_includes - Parse reserved words from source code.
+ * Argument line is line from source code we want to parse.
+ */
+char* parse_reserved(char * line);
 
 
 /* For include header in CPP code */

@@ -47,47 +47,44 @@ int strsrc(char *str, char *srch)
  
 /*
  * strrep - Replace string with another string in whole buffer. Argument 
- * str is whole buffer, oldstr is string which we want to replace and 
- * newstr is new string which we want to save. Return value is whole 
- * buffer with replaced strings, it must be freed with free() after usage.
+ * orig is whole buffer, rep is string which we want to replace and with 
+ * is new string which we want to save. Return value is whole buffer with 
+ * replaced strings, it must be freed with free() after usage.
  */
-char *strrep(const char *str, const char *oldstr, const char *newstr)
+char *strrep(char *orig, char *rep, char *with) 
 {
-    char *ret;
-    int i, count = 0;
-    int newlen = strlen(newstr);
-    int oldstrlen = strlen(oldstr);
+    int len_rep, len_with, len_front, count;
+    char *result;
+    char *ins;
+    char *tmp;
 
-    for (i = 0; str[i] != '\0'; i++)    
-    {
-        if (strstr(&str[i], oldstr) == &str[i]) 
-        {
-            count++;
-            i += oldstrlen - 1;
-        }
+    if (!orig)
+        return NULL;
+    if (!rep)
+        rep = "";
+    len_rep = strlen(rep);
+    if (!with)
+        with = "";
+    len_with = strlen(with);
+
+    ins = orig;
+    for (count = 0; (tmp = strstr(ins, rep)) != NULL; ++count) {
+        ins = tmp + len_rep;
     }
 
-    /* Allocate output buffer memory */
-    ret = (char *)malloc(i + count * (newlen - oldstrlen));
-    if (ret == NULL)
-        exit_prog(1, "Can not allocate strrep buffer memory");
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
 
-    i = 0;
-    while (*str)
-    {
-        /* Compare the substring with the newstring */
-        if (strstr(str, oldstr) == str)
-        {
-            /* Adding newlength to the new string */
-            strcpy(&ret[i], newstr);
-            i += newlen;
-            str += oldstrlen;
-        }
-        else ret[i++] = *str++;
+    if (!result)
+        return NULL;
+
+    while (count--) {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep;
     }
-
-    /* Null terminate */
-    ret[i] = '\0';
-
-    return ret;
+    strcpy(tmp, orig);
+    
+    return result;
 }

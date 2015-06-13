@@ -35,7 +35,7 @@ void init_uix(UserInputX *uix)
 {
     bzero(uix->input, sizeof(uix->input));
     bzero(uix->output, sizeof(uix->output));
-    strcpy(uix->output, "შედეგი");
+    strcpy(uix->output, "output");
 
 }
 
@@ -72,7 +72,9 @@ int main(int argc, char *argv[])
     /* Used variables */
     FILE * fp;
     char out[MAXMSG];
+    char recept[236];
     char *line = NULL;
+    char *retline;
     size_t len = 0;
     ssize_t read;
     struct stat st;
@@ -90,7 +92,7 @@ int main(int argc, char *argv[])
     /* Check valid args */
     if (argv[1] == NULL) 
     {
-        slog(0, SLOG_ERROR, "მიუთითეთ დასაკომპილირებელი ფაილი.");
+        slog(0, SLOG_ERROR, "მიუთითეთ დასაკომპილირებელი ფაილი");
         usage(argv[0]);
         return 0;
     }
@@ -111,26 +113,36 @@ int main(int argc, char *argv[])
     {
         /* Check if output file exists */
         if (stat(uix.output, &st) != -1) 
-        {
-            slog(0, SLOG_WARN, "ფაილი '%s' უკვე არსებობს", uix.output);
-            sprintf(uix.output, "%s1", uix.output);
-        }
+            remove(uix.output);
+
         else ocreated = 1;
     }
 
+    /* Output c file */
+    sprintf(out, "%s.c", uix.output);
+    remove(out);
+
     /* Loop in file line by line */
+    slog(0, SLOG_INFO, "მიმდინარეობს '%s' ფაილის კომპილაცია", uix.input);
     while ((read = getline(&line, &len, fp)) != -1)
     {           
         /* Parse line */
-        bzero(out, sizeof(out));
         sscanf(line, "%512[^\n]\n", line);
-        strcpy(out, line);
-        file_add_line(uix.output, parse_basic_types(out));
+        retline = parse_includes(line);
+        retline = parse_reserved(retline); 
+        
+        /* Check valid line */
+        if (retline != NULL) file_add_line(out, retline);
     }
 
     /* Cleanup */
     if (line) free(line);
     fclose(fp);
+
+    /* Create recept and compile */
+    sprintf(recept, "gcc -o %s %s", uix.output, out);
+    system(recept);
+    remove(out);
 
     return 0;
 }

@@ -8,3 +8,6 @@ make
 cd ../compiler
 make clean
 make
+
+echo "დასაინსტალირებლად საჭიროა სუპერ მომხმარებლის პრივილეგიები"
+sudo make install

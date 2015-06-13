@@ -23,11 +23,11 @@ int strsrc(char *str, char *srch);
 
 /*
  * strrep - Replace string with another string in whole buffer. Argument 
- * str is whole buffer, oldstr is string which we want to replace and 
- * newstr is new string which we want to save. Return value is whole 
- * buffer with replaced strings, it must be freed with free() after usage.
+ * orig is whole buffer, rep is string which we want to replace and with 
+ * is new string which we want to save. Return value is whole buffer with 
+ * replaced strings, it must be freed with free() after usage.
  */
-char *strrep(const char *str, const char *oldstr, const char *newstr);
+char *strrep(char *orig, char *rep, char *with);
 
 
 /* For include header in CPP code */

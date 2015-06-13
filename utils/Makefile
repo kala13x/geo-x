@@ -1,5 +1,5 @@
 LIB = -lnsl -lcrypt -lssl -lcrypto
-CFLAGS = -g -O2 -Wall -fPIC -D_OPENSSL_MD5_=1
+CFLAGS = -g -O2 -Wall -fPIC
 
 OBJS = systime.o color.o socks.o errex.o \
 	files.o strops.o slog.o crypt.o
