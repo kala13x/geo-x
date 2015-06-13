@@ -1,17 +1,17 @@
 CXXFLAGS = -g -O2 -Wall -I../utils
 LIB = ../utils/utils.a
-OBJ = gx.o parser.o
+OBJ = gxx.o parser.o
 INSTALL = ../bin
 
 all: $(OBJ)
-	$(CXX) $(CXXFLAGS) -o gx $(OBJ) $(LIB)
+	$(CXX) $(CXXFLAGS) -o gxx $(OBJ) $(LIB)
 	@test -d $(INSTALL) || mkdir $(INSTALL)
-	@install -m 0755 gx $(INSTALL)/
+	@install -m 0755 gxx $(INSTALL)/
 
-gx.o: parser.h mdefs.h stdinc.h
+gxx.o: parser.h mdefs.h stdinc.h
 parser.o: parser.h mdefs.h stdinc.h 
 
 .PHONY: clean
 
 clean:
-	$(RM) gx $(OBJ)
+	$(RM) gxx $(OBJ)

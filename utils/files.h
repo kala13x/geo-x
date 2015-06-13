@@ -44,11 +44,6 @@ void file_remove_line(char *fname, char *str);
  * argument line is line to be added to file */
 int file_add_line(char *fname, char *line);
 
-/* create_file - create file. First argument fname
- * is file path in which we want to add line and second
- * argument line is line to be added to file */
-int create_file(char *fname, char *line);
-
 
 /* For include header in CPP code */
 #ifdef __cplusplus

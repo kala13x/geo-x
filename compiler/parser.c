@@ -7,62 +7,74 @@
  */
 
 
+#include "../utils/strops.h" 
+#include "../utils/slog.h"
 #include "stdinc.h"
 #include "mdefs.h"
-#include "../utils/strops.h" 
-#include "../utils/slog.h" 
-char * translate(char * line)
+
+
+/* 
+ * translate_alphabet - Translate alpabhet from georgian to english.
+ * Agument line is parsed file line in which we want to translate.
+ */
+char* translate_alphabet(char * line)
 {
-    line = strrep(line, "ა", "a");
-    line = strrep(line, "ბ", "b");
-    line = strrep(line, "გ", "g");
-    line = strrep(line, "დ", "d");
-    line = strrep(line, "ე", "e");
-    line = strrep(line, "ვ", "v");
-    line = strrep(line, "ზ", "z");
-    line = strrep(line, "თ", "t");
-    line = strrep(line, "ი", "i");
-    line = strrep(line, "კ", "k");
-    line = strrep(line, "ლ", "l");
-    line = strrep(line, "მ", "m");
-    line = strrep(line, "ნ", "n");
-    line = strrep(line, "ო", "o");
-    line = strrep(line, "პ", "p");
-    line = strrep(line, "ჟ", "zh");
-    line = strrep(line, "რ", "r");
-    line = strrep(line, "ს", "s");
-    line = strrep(line, "ტ", "t");
-    line = strrep(line, "ფ", "f");
-    line = strrep(line, "ქ", "q");
-    line = strrep(line, "ღ", "gh");
-    line = strrep(line, "ყ", "y");
-    line = strrep(line, "შ", "sh");
-    line = strrep(line, "ჩ", "ch");
-    line = strrep(line, "ძ", "dz");
-    line = strrep(line, "წ", "w");
-    line = strrep(line, "ხ", "x");
-    line = strrep(line, "ჯ", "j");
-    line = strrep(line, "ჰ", "h");
+    char *out;
+    out = strrep(line, "ა", "a");
+    out = strrep(out, "ბ", "b");
+    out = strrep(out, "გ", "g");
+    out = strrep(out, "დ", "d");
+    out = strrep(out, "ე", "e");
+    out = strrep(out, "ვ", "v");
+    out = strrep(out, "ზ", "z");
+    out = strrep(out, "თ", "t");
+    out = strrep(out, "ი", "i");
+    out = strrep(out, "კ", "k");
+    out = strrep(out, "ლ", "l");
+    out = strrep(out, "მ", "m");
+    out = strrep(out, "ნ", "n");
+    out = strrep(out, "ო", "o");
+    out = strrep(out, "პ", "p");
+    out = strrep(out, "ჟ", "zh");
+    out = strrep(out, "რ", "r");
+    out = strrep(out, "ს", "s");
+    out = strrep(out, "ტ", "t");
+    out = strrep(out, "ფ", "f");
+    out = strrep(out, "ქ", "q");
+    out = strrep(out, "ღ", "gh");
+    out = strrep(out, "ყ", "y");
+    out = strrep(out, "შ", "sh");
+    out = strrep(out, "ჩ", "ch");
+    out = strrep(out, "ძ", "dz");
+    out = strrep(out, "წ", "w");
+    out = strrep(out, "ხ", "x");
+    out = strrep(out, "ჯ", "j");
+    out = strrep(out, "ჰ", "h");
 
     return line;
-
 }
-char * parseBasicTypes(char * line)
-{
-    char * out;
-    char * array[100];
-    char dubLine[512];
-    bzero(dubLine, sizeof(dubLine));
-    strcpy(dubLine,line);
-    int i=0;
-    array[i] = strtok(dubLine," ");
-    while(array[i]!=NULL)
-    {
-       array[++i] = strtok(NULL," ");
-    }
 
-    char * array2[10];
-    int i2=0;
+
+/* 
+ * parse_basic_types - Parse basic types from line. 
+ * Argument line is line which we want to parse.
+ */
+char* parse_basic_types(char * line)
+{
+    char dubline[MAXMSG];
+    char *out;
+    char *array[100];
+    char *array2[10];
+    int i2 = 0, i = 0;
+    
+    bzero(dubline, sizeof(dubline));
+    strcpy(dubline, line);
+    
+    /* Parse with space */
+    array[i] = strtok(dubline," ");
+    while(array[i]!=NULL) array[++i] = strtok(NULL," ");
+    
+    /* Parse with equal simbol */
     array2[i2] = strtok(array[i-1],"=");
     while(array2[i2]!=NULL)
     {
@@ -70,15 +82,15 @@ char * parseBasicTypes(char * line)
        slog(0,SLOG_LIVE,"%s -> %d",array2[i2-1],(i2-1));
     }
 
-
-    out = strrep(line,(char *) array2[0],translate(array2[0]));
-    out = strrep(out, (char *) gx_string, "char");
-    out = strrep(out, (char *) gx_int, "int");
-    out = strrep(out, (char *) gx_signed, "signed");
-    out = strrep(out, (char *) gx_unsigned, "unsigned");
-    out = strrep(out, (char *) gx_short, "short");
-    out = strrep(out, (char *) gx_long, "long");
-    out = strrep(out, (char *) gx_double, "double");
+    /* C-fy parsed types in line */
+    out = strrep(line, array2[0], translate_alphabet(array2[0]));
+    out = strrep(out, GX_STRING, "char");
+    out = strrep(out, GX_INT, "int");
+    out = strrep(out, GX_SIGNED, "signed");
+    out = strrep(out, GX_UNSIGNED, "unsigned");
+    out = strrep(out, GX_SHORT, "short");
+    out = strrep(out, GX_LONG, "long");
+    out = strrep(out, GX_DOUBLE, "double");
 
     return out;
 }

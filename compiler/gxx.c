@@ -14,10 +14,10 @@
 #include "../utils/slog.h"
 #include "../utils/info.h"
 #include "../utils/files.h"
+
 /* Local includes */
 #include "mdefs.h"
 #include "parser.h"
-
 
 
 /* Files */
@@ -69,16 +69,14 @@ static int parse_arguments(int argc, char *argv[], UserInputX *uix)
 /* Main function of compiler */
 int main(int argc, char *argv[]) 
 {
-    /** file variables **/
-    // file for read
+    /* Used variables */
     FILE * fp;
-    // file to write
-    FILE * fw;
-    char * line = NULL;
-    char  Translatedline[MAXMSG];
+    char out[MAXMSG];
+    char *line = NULL;
     size_t len = 0;
     ssize_t read;
-
+    struct stat st;
+    int ocreated = 0;
 
     /* Used variables */
     UserInputX uix;
@@ -99,37 +97,40 @@ int main(int argc, char *argv[])
 
     /* Parse Commandline Arguments */
     if (parse_arguments(argc, argv, &uix)) return 0;
+
+    /* Check if input file exists */
+    if (stat(uix.input, &st) == -1)
+        exit_prog(1, "ფაილი '%s' ვერ მოიძებნა", uix.input);
     
-    // check if input file name is exists
-    
-       fp = fopen(uix.input, "r");
-       if (fp == NULL)
-       {
-            exit_prog(1,"ფაილი : %s ვერ მოიძებნა", uix.input);
-       }
-        
+    /* Open input file for reading */
+    fp = fopen(uix.input, "r");
+    if (fp == NULL) exit_prog(1, "ვერ მოხერხდა '%s' ფაილის გახსნა", uix.input);
 
-        // open file for writing
-        // loop in file line by line
-       while ((read = getline(&line, &len, fp)) != -1)
-       {
+    /* Create new output file */
+    while (!ocreated) 
+    {
+        /* Check if output file exists */
+        if (stat(uix.output, &st) != -1) 
+        {
+            slog(0, SLOG_WARN, "ფაილი '%s' უკვე არსებობს", uix.output);
+            sprintf(uix.output, "%s1", uix.output);
+        }
+        else ocreated = 1;
+    }
 
-           
-             // call parser function
-            // first phase
-            bzero(Translatedline, sizeof(Translatedline));
-            sscanf(line,"%512[^\n]\n",line);
-            strcpy(Translatedline,line);  
-            create_file(uix.output,parseBasicTypes(Translatedline));
+    /* Loop in file line by line */
+    while ((read = getline(&line, &len, fp)) != -1)
+    {           
+        /* Parse line */
+        bzero(out, sizeof(out));
+        sscanf(line, "%512[^\n]\n", line);
+        strcpy(out, line);
+        file_add_line(uix.output, parse_basic_types(out));
+    }
 
-       }
+    /* Cleanup */
+    if (line) free(line);
+    fclose(fp);
 
-       fclose(fp);
-       if (line)
-       {
-            free(line);
-       }
-    
-    /* Some debug line */
-    slog(0, SLOG_LIVE, "მიმდინარეობს კომპილაცია: %s -> %s", uix.input, uix.output);
+    return 0;
 }
