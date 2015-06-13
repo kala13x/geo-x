@@ -12,49 +12,6 @@
 #include "stdinc.h"
 #include "mdefs.h"
 
-
-/* 
- * translate_alphabet - Translate alpabhet from georgian to english.
- * Agument line is parsed file line in which we want to translate.
- */
-char* translate_alphabet(char * line)
-{
-    char *out;
-    out = strrep(line, "ა", "a");
-    out = strrep(out, "ბ", "b");
-    out = strrep(out, "გ", "g");
-    out = strrep(out, "დ", "d");
-    out = strrep(out, "ე", "e");
-    out = strrep(out, "ვ", "v");
-    out = strrep(out, "ზ", "z");
-    out = strrep(out, "თ", "t");
-    out = strrep(out, "ი", "i");
-    out = strrep(out, "კ", "k");
-    out = strrep(out, "ლ", "l");
-    out = strrep(out, "მ", "m");
-    out = strrep(out, "ნ", "n");
-    out = strrep(out, "ო", "o");
-    out = strrep(out, "პ", "p");
-    out = strrep(out, "ჟ", "zh");
-    out = strrep(out, "რ", "r");
-    out = strrep(out, "ს", "s");
-    out = strrep(out, "ტ", "t");
-    out = strrep(out, "ფ", "f");
-    out = strrep(out, "ქ", "q");
-    out = strrep(out, "ღ", "gh");
-    out = strrep(out, "ყ", "y");
-    out = strrep(out, "შ", "sh");
-    out = strrep(out, "ჩ", "ch");
-    out = strrep(out, "ძ", "dz");
-    out = strrep(out, "წ", "w");
-    out = strrep(out, "ხ", "x");
-    out = strrep(out, "ჯ", "j");
-    out = strrep(out, "ჰ", "h");
-
-    return line;
-}
-
-
 /* 
  * parse_basic_types - Parse basic types from line. 
  * Argument line is line which we want to parse.
@@ -92,5 +49,76 @@ char* parse_basic_types(char * line)
     out = strrep(out, GX_LONG, "long");
     out = strrep(out, GX_DOUBLE, "double");
 
+    return out;
+}
+
+/* 
+ * translate_alphabet - Translate alpabhet from georgian to english.
+ * Agument line is parsed file line in which we want to translate.
+ */
+char* translate_alphabet(char * line)
+{
+    char *out;
+    out = strrep(line, "ა", "a");
+    out = strrep(out, "ბ", "b");
+    out = strrep(out, "გ", "g");
+    out = strrep(out, "დ", "d");
+    out = strrep(out, "ე", "e");
+    out = strrep(out, "ვ", "v");
+    out = strrep(out, "ზ", "z");
+    out = strrep(out, "თ", "t");
+    out = strrep(out, "ი", "i");
+    out = strrep(out, "კ", "k");
+    out = strrep(out, "ლ", "l");
+    out = strrep(out, "მ", "m");
+    out = strrep(out, "ნ", "n");
+    out = strrep(out, "ო", "o");
+    out = strrep(out, "პ", "p");
+    out = strrep(out, "ჟ", "zh");
+    out = strrep(out, "რ", "r");
+    out = strrep(out, "ს", "s");
+    out = strrep(out, "ტ", "t");
+    out = strrep(out, "უ", "u");
+    out = strrep(out, "ფ", "f");
+    out = strrep(out, "ქ", "q");
+    out = strrep(out, "ღ", "gh");
+    out = strrep(out, "ყ", "y");
+    out = strrep(out, "შ", "sh");
+    out = strrep(out, "ჩ", "ch");
+    out = strrep(out, "ძ", "dz");
+    out = strrep(out, "წ", "w");
+    out = strrep(out, "ხ", "x");
+    out = strrep(out, "ჯ", "j");
+    out = strrep(out, "ჰ", "h");
+
+    return out;
+}
+char * parse_include(char * line)
+{
+    char *out;
+    char out_backup[PATH_MAX];
+    bzero(out_backup, sizeof(out_backup));
+    
+    char *array[100];
+    int i=0;
+    out = strrep(line,GX_INCLUDE,"#include");
+    strcpy(out_backup, out);
+    array[i] = strtok(out," ");
+    while(array[i]!=NULL) array[++i] = strtok(NULL," ");
+    out = strrep(out_backup,array[1],translate_alphabet(array[1]));
+    sprintf(out,"%s.h",out);
+    return out;
+}
+char * parser_route(char * line)
+{
+    
+    char *out;
+    if(strsrc(line,GX_INCLUDE)>0)
+    {
+        out = parse_include(line);
+    }
+
+   //  else out = NULL;
+    out =  parse_basic_types(out);
     return out;
 }

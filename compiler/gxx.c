@@ -113,7 +113,8 @@ int main(int argc, char *argv[])
         if (stat(uix.output, &st) != -1) 
         {
             slog(0, SLOG_WARN, "ფაილი '%s' უკვე არსებობს", uix.output);
-            sprintf(uix.output, "%s1", uix.output);
+            //sprintf(uix.output, "%s1", uix.output);
+            remove(uix.output);
         }
         else ocreated = 1;
     }
@@ -122,10 +123,9 @@ int main(int argc, char *argv[])
     while ((read = getline(&line, &len, fp)) != -1)
     {           
         /* Parse line */
-        bzero(out, sizeof(out));
         sscanf(line, "%512[^\n]\n", line);
-        strcpy(out, line);
-        file_add_line(uix.output, parse_basic_types(out));
+        char* ret = parser_route(line);
+        if (ret != NULL) file_add_line(uix.output, ret);
     }
 
     /* Cleanup */

@@ -25,7 +25,14 @@ char* translate_alphabet(char * line);
  * Argument line is line which we want to parse.
  */
 char* parse_basic_types(char * line);
-
+/**
+*
+*/
+char * parser_route(char * line);
+/*
+*
+*/
+char * parse_include(char * line);
 
 /* For include header in CPP code */
 #ifdef __cplusplus
