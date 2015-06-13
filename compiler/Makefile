@@ -9,7 +9,7 @@ all: $(OBJ)
 	@install -m 0755 gx $(INSTALL)/
 
 gx.o: parser.h mdefs.h stdinc.h
-parser.o: parser.h stdinc.h
+parser.o: parser.h mdefs.h stdinc.h 
 
 .PHONY: clean
 

@@ -160,3 +160,20 @@ int file_add_line(char *fname, char *line)
 
     return 1;
 }
+/* create_file - create file. First argument fname
+ * is file path in which we want to add line and second
+ * argument line is line to be added to file */
+int create_file(char *fname, char *line) 
+{
+    /* Open file pointer */
+    FILE *fp = fopen(fname, "wb+");
+    if (fp == NULL) return -1;
+
+    /* Write key in file */
+    fprintf(fp, "%s\n", line);
+
+    /* Close file pointer */
+    fclose(fp);
+
+    return 1;
+}

@@ -5,3 +5,5 @@
  *
  * Header of source parser for იქ-C compilator. 
  */
+char * parseBasicTypes(char * line);
+char * translate(char * line);
