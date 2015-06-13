@@ -20,3 +20,6 @@
 #include <errno.h>
 #include <crypt.h>
 #include <time.h>
+
+/* Linux includes */
+#include <sys/utsname.h>

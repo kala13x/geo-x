@@ -12,12 +12,12 @@
 #include "../utils/strops.h"
 #include "../utils/errex.h"
 #include "../utils/slog.h"
-#include "../utils/info.h"
 #include "../utils/files.h"
 
 /* Local includes */
 #include "mdefs.h"
 #include "parser.h"
+#include "info.h"
 
 
 /* Files */

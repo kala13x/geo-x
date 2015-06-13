@@ -136,7 +136,7 @@ int open_remote_host(char *host, int port)
     ret = connect(sock, (struct sockaddr *) &rem_addr, len);
     if (ret < 0) 
     {
-        slog(0, SLOG_ERROR, "Can not connect client socket");
+        slog(0, SLOG_ERROR, "ვერ მოხერხდა კლიენტის სოკეტთან დაკავშირება");
 
         close(sock);
         return ret;
@@ -165,7 +165,7 @@ int create_client_socket(char *addr, int16_t port)
     sock = socket (AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
-        slog(2, SLOG_ERROR, "Can not create client socket: %d", sock);
+        slog(2, SLOG_ERROR, "ვერ მოხერხდა კლიენტის სოკეტის შექმნა [%s:%d]", addr, port);
 
         return sock;
     }
@@ -208,7 +208,7 @@ int create_server_socket(char *addr, uint16_t port)
     sock = socket (PF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
-        slog(2, SLOG_ERROR, "Can not create server socket: %d", sock);
+        slog(2, SLOG_ERROR, "სერვერის სოკეტის შექმნა ვერ მოხერხდა: %d", sock);
 
         return sock;
     }
@@ -226,30 +226,13 @@ int create_server_socket(char *addr, uint16_t port)
     if (ret < 0)
     {
         close(sock);
-        exit_prog(1, "Can not bind server socket");
+        exit_prog(1, "სოკეტის დაბინდვა ვერ მოხერხდა");
     }
 
     /* Listen to socket */
     ret = listen(sock, 5);
     if (ret < 0) 
-        exit_prog(1, "Can not listen to server socket");
-
-    return sock;
-}
-
-
-/* 
- * create_raw_socket - Function creates and returns raw 
- * socket (Root access is required to create raw socket).
- */
-int create_raw_socket()
-{
-    /* Create raw socket */
-    int sock = socket(AF_INET , SOCK_RAW , IPPROTO_TCP);
-    if (sock < 0) 
-    {
-        slog(2, SLOG_ERROR, "Can not create raw socket: %d", sock);
-    }
+        exit_prog(1, "ვერ მოხდერხდა სოკეტზე მოსმენა");
 
     return sock;
 }
