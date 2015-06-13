@@ -1,7 +1,7 @@
 LIB = -lnsl -lcrypt -lssl -lcrypto
 CFLAGS = -g -O2 -Wall -fPIC -D_OPENSSL_MD5_=1
 
-OBJS = info.o systime.o color.o socks.o errex.o \
+OBJS = systime.o color.o socks.o errex.o \
 	files.o strops.o slog.o crypt.o
 
 .c.o:
@@ -19,7 +19,6 @@ strops.o: strops.h stdinc.h
 crypt.o: crypt.h stdinc.h
 color.o: color.h stdinc.h
 files.o: files.h stdinc.h
-info.o: info.h stdinc.h
 slog.o: slog.h systime.h stdinc.h
 
 .PHONY: clean

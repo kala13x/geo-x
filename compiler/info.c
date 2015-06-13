@@ -7,8 +7,8 @@
  */
 
 
+#include "../utils/slog.h"
 #include "stdinc.h"
-#include "slog.h"
 #include "info.h"
 
 
