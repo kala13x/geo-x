@@ -5,9 +5,16 @@ cd ${PWD##}/utils
 make clean
 make
 
-cd ../compiler
+cd ../gxx
 make clean
 make
 
-echo "დასაინსტალირებლად საჭიროა სუპერ მომხმარებლის პრივილეგიები"
+echo "საჭიროა სუპერ მომხმარებლის პრივილეგიები"
 sudo make install
+
+cd ../libx
+make clean
+make
+sudo make install
+
+cd ..

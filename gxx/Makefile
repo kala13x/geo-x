@@ -4,7 +4,6 @@ OBJ = gxx.o parser.o info.o
 
 BUILD = ../bin
 INSTALL = /usr/local/bin
-INCLUDE = /usr/local/include
 
 all: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o gxx $(OBJ) $(LIB)
@@ -13,9 +12,7 @@ all: $(OBJ)
 
 install:
 	@test -d $(INSTALL) || mkdir $(INSTALL)
-	@test -d $(INCLUDE) || mkdir $(INCLUDE)
 	@install -m 0755 gxx $(INSTALL)/
-	@install -m 0755 standartebi.h $(INCLUDE)/
 
 gxx.o: parser.h info.h mdefs.h stdinc.h
 parser.o: parser.h mdefs.h stdinc.h 
