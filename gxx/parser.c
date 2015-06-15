@@ -7,10 +7,29 @@
  */
 
 
+/* Util includes */
 #include "../utils/strops.h" 
 #include "../utils/slog.h"
+
+/* Local includes */
 #include "stdinc.h"
 #include "mdefs.h"
+
+#define KEYMAP_SIZE 33
+
+
+/* Full georgian alphabet keymap */
+static char *geo_keymap[KEYMAP_SIZE] = {"ა", "ბ", "გ", "დ", "ე", "ვ", "ზ", "თ", "ი", 
+                                        "კ", "ლ", "მ", "ნ", "ო", "პ", "ჟ", "რ", 
+                                        "ს", "ტ", "უ", "ფ", "ქ", "ღ", "ყ", "შ", 
+                                        "ჩ", "ც", "ძ", "წ", "ჭ", "ხ", "ჯ", "ჰ"};
+
+
+/* English values for geo keymap */
+static char *en_keymap[KEYMAP_SIZE] = {"a", "b", "g", "d", "e", "v", "z", "th", "i",
+                                        "k", "l", "m", "n", "o", "p", "zh", "r",
+                                        "s", "t", "u", "f", "q", "gh", "y", "sh",
+                                        "ch", "c", "dz", "w", "wh", "x", "j", "h"};
 
 
 /* 
@@ -19,41 +38,13 @@
  */
 char* translate_alphabet(char * line)
 {
-    static char *out = NULL;
-    out = strrep(line, "ა", "a");
-    out = strrep(out, "ბ", "b");
-    out = strrep(out, "გ", "g");
-    out = strrep(out, "დ", "d");
-    out = strrep(out, "ე", "e");
-    out = strrep(out, "ვ", "v");
-    out = strrep(out, "ზ", "z");
-    out = strrep(out, "თ", "t");
-    out = strrep(out, "ი", "i");
-    out = strrep(out, "კ", "k");
-    out = strrep(out, "ლ", "l");
-    out = strrep(out, "მ", "m");
-    out = strrep(out, "ნ", "n");
-    out = strrep(out, "ო", "o");
-    out = strrep(out, "პ", "p");
-    out = strrep(out, "ჟ", "zh");
-    out = strrep(out, "რ", "r");
-    out = strrep(out, "ს", "s");
-    out = strrep(out, "ტ", "t");
-    out = strrep(out, "უ", "u");
-    out = strrep(out, "ფ", "f");
-    out = strrep(out, "ქ", "q");
-    out = strrep(out, "ღ", "gh");
-    out = strrep(out, "ყ", "y");
-    out = strrep(out, "შ", "sh");
-    out = strrep(out, "ჩ", "ch");
-    out = strrep(out, "ც", "c");
-    out = strrep(out, "ძ", "dz");
-    out = strrep(out, "წ", "w");
-    out = strrep(out, "ხ", "x");
-    out = strrep(out, "ჯ", "j");
-    out = strrep(out, "ჰ", "h");
+    int i;
 
-    return out;
+    /* Translate each key in alphabet */
+    for(i = 0; i < KEYMAP_SIZE; i++)
+        line = strrep(line, geo_keymap[i], en_keymap[i]);
+
+    return line;
 }
 
 
@@ -97,32 +88,38 @@ char* parse_includes(char * line)
 char* parse_reserved(char * line) 
 {
     static char *out = NULL;
-    out = strrep(line, GX_STRING, "char*");
-    out = strrep(out, GX_INT, "int");
-    out = strrep(out, GX_SIGNED, "signed");
+
+    /* Defs/Incs */
+    out = strrep(line, GX_INCLUDE, "#include");
+    out = strrep(out, GX_DEFINE, "#define");
+
+    /* Opers */
+    out = strrep(out, GX_ELSE_IF, "else if");
+    out = strrep(out, GX_FOREACH, "foreach");
+    out = strrep(out, GX_WHILE, "while");
+    out = strrep(out, GX_BREAK, "break");
+    out = strrep(out, GX_EXLSE, "else");
+    out = strrep(out, GX_FOR, "for");
+    out = strrep(out, GX_DO, "do");
+    out = strrep(out, GX_AS, "as");
+    out = strrep(out, GX_IF, "if");
+
+    /* Types */
     out = strrep(out, GX_UNSIGNED, "unsigned");
+    out = strrep(out, GX_SIGNED, "signed");
     out = strrep(out, GX_DOUBLE, "double");
+    out = strrep(out, GX_STRING, "char*");
     out = strrep(out, GX_SHORT, "short");
     out = strrep(out, GX_LONG, "long");
-    out = strrep(out, GX_FOR, "for");
-    out = strrep(out, GX_WHILE, "while");
-    out = strrep(out, GX_DO, "do");
-    out = strrep(out, GX_FOREACH, "foreach");
-    out = strrep(out, GX_AS, "as");
-    out = strrep(out, GX_FUNCTION, "");
-    out = strrep(out, GX_BREAK, "break");
-    out = strrep(out, GX_IF, "if");
-    out = strrep(out, GX_EXLSE, "else");
-    out = strrep(out, GX_ELSE_IF, "else if");
-    out = strrep(out, GX_INCLUDE, "#include");
-    out = strrep(out, GX_DEFINE, "#define");
+    out = strrep(out, GX_INT, "int");
+
+    /* Others */
+    out = strrep(out, GX_PRINT, "printf");
     out = strrep(out, GX_MAIN, "main");
     out = strrep(out, GX_VOID, "void");
     out = strrep(out, GX_NULL, "NULL");
     out = strrep(out, GX_EXIT, "exit");
-    out = strrep(out, GX_PRINT, "printf");
-
-    out = translate_alphabet(out);
+    out = strrep(out, GX_FUNCTION, "");
 
     return out;
 }

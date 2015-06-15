@@ -123,13 +123,16 @@ int main(int argc, char *argv[])
     remove(out);
 
     /* Loop in file line by line */
-    slog(0, SLOG_INFO, "მიმდინარეობს '%s' ფაილის კომპილაცია", uix.input);
+    slog(0, SLOG_INFO, "მიმდინარეობს კომპილაცია '%s' --> '%s'", 
+        uix.input, uix.output);
+    
     while ((read = getline(&line, &len, fp)) != -1)
     {           
         /* Parse line */
         sscanf(line, "%512[^\n]\n", line);
         retline = parse_includes(line);
-        retline = parse_reserved(retline); 
+        retline = parse_reserved(retline);
+        retline = translate_alphabet(retline); 
         
         /* Check valid line */
         if (retline != NULL) file_add_line(out, retline);

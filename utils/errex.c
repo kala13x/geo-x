@@ -36,7 +36,7 @@ void exit_prog(int msg, char * errmsg, ...)
     if (msg)
         slog(0, SLOG_ERROR, "%s", string);
 
-    slog(0, SLOG_INFO, "Press enter to exit");
+    slog(0, SLOG_INFO, "პროგრამიდან გასასვლელად დააჭირეთ ენთერს");
     char c = getchar();
     while (c != '\n')
         c = getchar();
@@ -53,8 +53,8 @@ void clean_prog(int sig)
 {
     /* Handle signals */
     if (sig == SIGILL || sig == SIGSEGV) 
-        slog(0, SLOG_FATAL, "Incorrect data!");
+        slog(0, SLOG_FATAL, "არასწორი მონაცემები!");
 
-    slog(0, SLOG_LIVE, "Cleaning up...");
+    slog(0, SLOG_LIVE, "მიმდინარეობს წმენდა...");
     exit(-1);
 }
