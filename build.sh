@@ -13,8 +13,6 @@ echo "საჭიროა სუპერ მომხმარებლის
 sudo make install
 
 cd ../libx
-make clean
-make
 sudo make install
 
 cd ..
