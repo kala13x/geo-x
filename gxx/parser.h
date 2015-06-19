@@ -13,6 +13,14 @@ extern "C" {
 #endif
 
 
+/*
+ * tokenize_quotes - Get quotes from line and return part
+ * by part. Argument line is whole line, lstart is part
+ * before quotes and argument lend is part after quotes.
+ */
+char* tokenize_quotes(char *line, char *lstart, char *lend);
+
+
 /* 
  * translate_alphabet - Translate alpabhet from georgian to english.
  * Agument line is parsed file line in which we want to translate.
