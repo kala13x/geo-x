@@ -143,6 +143,54 @@ void file_remove_line(char *fname, char *str)
 }
 
 
+/* 
+ * file_replace_line - Replace exiting line with another. Function 
+ * finds line and replaces it from argument. First Argument fname 
+ * is file path second argument str is keyword to find line which 
+ * we want to replace and third argument is new line to replace. 
+ */
+int file_replace_line(char *fname, char *str, char* newline)
+{
+    FILE * fp;
+    FILE * file;
+    int ret = -1;
+    size_t len = 0;
+    ssize_t read;
+    char * line = NULL;
+
+    /* Open templorary file */
+    file = fopen("file.tmp", "a");
+    if (file != NULL) 
+    {
+        /* Open exiting cache file */
+        fp = fopen(fname, "r");
+        if(fp != NULL)
+        {
+            /* Read from exiing cache file */
+            while ((read = getline(&line, &len, fp)) != -1) 
+            {
+                /* Skip line if string exits on line */
+                if(strstr(line, str) == NULL) 
+                    fprintf(file, "%s", line);
+                else fprintf(file, "%s\n", newline);
+            }
+
+            /* Clean up memory */
+            fclose(fp);
+            if (line) free(line);
+        }
+
+        /* End up */
+        fclose(file);
+        remove(fname);
+        rename("file.tmp", fname);
+        ret = 1;
+    } else ret = 0;
+
+    return ret;
+}
+
+
 /* file_add_line - Add line to file. First argument fname
  * is file path in which we want to append line and second
  * argument line is line to be added to file */

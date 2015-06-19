@@ -39,6 +39,15 @@ int copy_file(char* src, char* dst);
 void file_remove_line(char *fname, char *str);
 
 
+/* 
+ * file_replace_line - Replace exiting line with another. Function 
+ * finds line and replaces it from argument. First Argument fname 
+ * is file path second argument str is keyword to find line which 
+ * we want to replace and third argument is new line to replace. 
+ */
+int file_replace_line(char *fname, char *str, char* newline);
+
+
 /* file_add_line - Add line to file. First argument fname
  * is file path in which we want to append line and second
  * argument line is line to be added to file */
