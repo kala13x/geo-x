@@ -114,7 +114,9 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_INT, "int");
 
     /* Others */
+    out = strrep(out, GX_TYPEDEF, "typedef");
     out = strrep(out, GX_PRINT, "printf");
+    out = strrep(out, GX_STRUCT, "struct");
     out = strrep(out, GX_MAIN, "main");
     out = strrep(out, GX_VOID, "void");
     out = strrep(out, GX_NULL, "NULL");
