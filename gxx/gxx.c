@@ -24,6 +24,7 @@
 typedef struct {
     char input[PATH_MAX];
     char output[PATH_MAX];
+    short save_out;
 } UserInputX;
 
 
@@ -36,7 +37,7 @@ void init_uix(UserInputX *uix)
     bzero(uix->input, sizeof(uix->input));
     bzero(uix->output, sizeof(uix->output));
     strcpy(uix->output, "output");
-
+    uix->save_out = 0;
 }
 
 
@@ -47,13 +48,16 @@ void init_uix(UserInputX *uix)
 static int parse_arguments(int argc, char *argv[], UserInputX *uix)
 {
     int c;
-    while ( (c = getopt(argc, argv, "i:o:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "i:o:s1:h1")) != -1) {
         switch (c) {
         case 'i':
             strcpy(uix->input, optarg);
             break;
         case 'o':
             strcpy(uix->output, optarg);
+            break;
+        case 's':
+            uix->save_out = 1;
             break;
         case 'h':
         default:
@@ -85,6 +89,12 @@ int main(int argc, char *argv[])
 
     /* Greet users */
     greet("იქ->C კომპილატორი");
+
+    /* Interrupt and termination (ANSI) */
+    signal(SIGINT , clean_prog);
+    signal(SIGTERM, clean_prog);
+    signal(SIGILL, clean_prog);
+    signal(SIGSEGV, clean_prog);
 
     /* Initialize user input vars */
     init_uix(&uix);
@@ -145,7 +155,9 @@ int main(int argc, char *argv[])
     /* Create recept and compile */
     sprintf(recept, "gcc -o %s %s", uix.output, out);
     system(recept);
-    remove(out);
+    
+    /* Remove output */
+    if (!uix.save_out) remove(out);
 
     return 0;
 }

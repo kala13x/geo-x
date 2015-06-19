@@ -32,19 +32,68 @@ static char *en_keymap[KEYMAP_SIZE] = {"a", "b", "g", "d", "e", "v", "z", "th", 
                                         "ch", "c", "dz", "w", "wh", "x", "j", "h"};
 
 
+/*
+ * tokenize_quotes - Get quotes from line and return part
+ * by part. Argument line is whole line, lstart is part
+ * before quotes and argument lend is part after quotes.
+ */
+char* tokenize_quotes(char *line, char *lstart, char *lend) 
+{
+    /* Parts to parse */
+    char *quote;
+
+    /* Check correct line */
+    if (!strsrc(line, "\"")) 
+        return NULL;
+
+    /* Tokenize quotes */
+    lstart = strtok(line, "\"");
+    quote = strtok(NULL, "\"");
+    lend = strtok(NULL, "\"");
+
+    return quote;
+}
+
+
 /* 
  * translate_alphabet - Translate alpabhet from georgian to english.
  * Agument line is parsed file line in which we want to translate.
  */
 char* translate_alphabet(char * line)
 {
+    char *quote, *lstart, *lend;
+    static char retline[LINE_MAX];
     int i;
 
-    /* Translate each key in alphabet */
-    for(i = 0; i < KEYMAP_SIZE; i++)
-        line = strrep(line, geo_keymap[i], en_keymap[i]);
+    /* Check correct line */
+    if (strsrc(line, "\"") > 0) 
+    {
+        /* Tokenize quotes */
+        lstart = strtok(line, "\"");
+        quote = strtok(NULL, "\"");
+        lend = strtok(NULL, "\"");
 
-    return line;
+        /* Translate start part */
+        for(i = 0; i < KEYMAP_SIZE; i++)
+            lstart = strrep(lstart, geo_keymap[i], en_keymap[i]);
+
+        /* Translate end part */
+        for(i = 0; i < KEYMAP_SIZE; i++)
+            lend = strrep(lend, geo_keymap[i], en_keymap[i]);
+
+        /* Join start, quote and end */
+        sprintf(retline, "%s\"%s\"%s", lstart, quote, lend);
+    }
+    else 
+    {
+        /* Translate each key in alphabet */
+        for(i = 0; i < KEYMAP_SIZE; i++)
+            line = strrep(line, geo_keymap[i], en_keymap[i]);
+
+        strcpy(retline, line);
+    }
+
+    return retline;
 }
 
 
