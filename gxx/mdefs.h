@@ -33,6 +33,5 @@
 #define GX_DEFINE "აღწერე"
 #define GX_NULL "არაფერი"
 #define GX_EXIT "მოკვდი"
-#define GX_PRINT "დაბეჭდე"
 #define GX_STRUCT "სტრუქტურა"
 #define GX_TYPEDEF "გამოაცხადე"
