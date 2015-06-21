@@ -212,6 +212,7 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_RETSTRING, "string");
     out = strrep(out, GX_RETDOUBLE, "double");
     out = strrep(out, GX_RETVOID, "void");
+    out = strrep(out, GX_NO, "");
 
     return out;
 }

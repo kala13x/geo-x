@@ -26,6 +26,7 @@
 #define GX_FUNCTION "ფუნქცია"
 #define GX_BREAK "შეწყვიტე"
 #define GX_IF "თუ"
+#define GX_NO "არ"
 #define GX_EXLSE "მაშინ"
 #define GX_ELSE_IF "მაშინთუ"
 #define GX_INCLUDE "შემოიღე" 
