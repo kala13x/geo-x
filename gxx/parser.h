@@ -29,6 +29,13 @@ char* translate_alphabet(char * line);
 
 
 /* 
+ * parse_functions - Translate functions from georgian to english.
+ * Agument line is parsed file line in which we want to translate.
+ */
+char* parse_functions(char * line);
+
+
+/* 
  * parse_includes - Parse include definitions from source.
  * Argument line is line from source code we want to parse.
  */

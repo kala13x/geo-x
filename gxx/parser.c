@@ -131,6 +131,40 @@ char* parse_includes(char * line)
 
 
 /* 
+ * parse_functions - Translate functions from georgian to english.
+ * Agument line is parsed file line in which we want to translate.
+ */
+char* parse_functions(char * line)
+{
+    char *func, *fname, *ret, *type;
+    char getline[MAXMSG];
+    char rep[MAXMSG];
+    char newrep[MAXMSG];
+    char *out;
+
+    /* Check valid line */
+    if (strsrc(line, "ფუნქცია") <= 0 || strsrc(line, "ცარიელი") > 0)
+        return line;
+
+    strcpy(getline, line);
+
+    /* Parse line */
+    func = strtok(line, " ");
+    fname = strtok(NULL, " ");
+    ret = strtok(NULL, " ");
+    type = strtok(NULL, " ");
+    sscanf(type, "%32[^(](", type);
+
+    /* Create recept */ 
+    sprintf(rep, "%s %s %s %s", func, fname, ret, type);
+    sprintf(newrep, "%s %s", type, fname);
+    out = strrep(getline, rep, newrep);
+
+    return out;
+}
+
+
+/* 
  * parse_includes - Parse reserved words from source code.
  * Argument line is line from source code we want to parse.
  */
@@ -148,6 +182,7 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_WHILE, "while");
     out = strrep(out, GX_BREAK, "break");
     out = strrep(out, GX_EXLSE, "else");
+    out = strrep(out, GX_EQUAL, "==");
     out = strrep(out, GX_FOR, "for");
     out = strrep(out, GX_DO, "do");
     out = strrep(out, GX_AS, "as");
@@ -170,6 +205,13 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_NULL, "NULL");
     out = strrep(out, GX_EXIT, "exit");
     out = strrep(out, GX_FUNCTION, "");
+
+    /* Returns */
+    out = strrep(out, GX_RETURN, "return");
+    out = strrep(out, GX_RETINT, "int");
+    out = strrep(out, GX_RETSTRING, "string");
+    out = strrep(out, GX_RETDOUBLE, "double");
+    out = strrep(out, GX_RETVOID, "void");
 
     return out;
 }

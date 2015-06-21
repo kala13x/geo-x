@@ -141,6 +141,7 @@ int main(int argc, char *argv[])
         /* Parse line */
         sscanf(line, "%512[^\n]\n", line);
         retline = parse_includes(line);
+        retline = parse_functions(retline);
         retline = parse_reserved(retline);
         retline = translate_alphabet(retline); 
         
