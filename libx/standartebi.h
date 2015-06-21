@@ -35,3 +35,8 @@ void dabewhde(const char *msg, ...)
     /* Print string */
     printf("%s\n", string);
 }
+
+int gadaiyvane_ricxvshi(char *string) 
+{
+	return atoi(string);
+}

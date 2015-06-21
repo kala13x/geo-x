@@ -181,8 +181,9 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_FOREACH, "foreach");
     out = strrep(out, GX_WHILE, "while");
     out = strrep(out, GX_BREAK, "break");
-    out = strrep(out, GX_EXLSE, "else");
+    out = strrep(out, GX_ELSE, "else");
     out = strrep(out, GX_EQUAL, "==");
+    out = strrep(out, GX_GIVEVALUE, "=");
     out = strrep(out, GX_FOR, "for");
     out = strrep(out, GX_DO, "do");
     out = strrep(out, GX_AS, "as");
@@ -212,7 +213,6 @@ char* parse_reserved(char * line)
     out = strrep(out, GX_RETSTRING, "string");
     out = strrep(out, GX_RETDOUBLE, "double");
     out = strrep(out, GX_RETVOID, "void");
-    out = strrep(out, GX_NO, "");
 
     return out;
 }
