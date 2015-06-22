@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <errno.h>
-#include <crypt.h>
 #include <time.h>
 
 /* Linux includes */

@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <errno.h>
-#include <crypt.h>
 #include <time.h>
 
 
@@ -31,9 +30,3 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <sys/stat.h>
-
-
-/* Dependency includes */
-#ifdef _OPENSSL_MD5_
-#include <openssl/md5.h>
-#endif
