@@ -1,11 +1,10 @@
-LIB = -lnsl
 CFLAGS = -g -O2 -Wall
 
 OBJS = systime.o color.o errex.o \
 	files.o strops.o slog.o
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< $(LIB)
+	$(CC) $(CFLAGS) -c $<
 
 utils.a: $(OBJS)
 	$(AR) rcs utils.a $(OBJS)
