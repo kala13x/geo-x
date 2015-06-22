@@ -51,7 +51,7 @@ void init_uix(UserInputX *uix)
 static int parse_arguments(int argc, char *argv[], UserInputX *uix)
 {
     int c;
-    while ( (c = getopt(argc, argv, "i:o:l:s1:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "i:o:g:s1:h1")) != -1) {
         switch (c) {
         case 'i':
             strcpy(uix->input, optarg);
@@ -59,7 +59,7 @@ static int parse_arguments(int argc, char *argv[], UserInputX *uix)
         case 'o':
             strcpy(uix->output, optarg);
             break;
-        case 'l':
+        case 'g':
             uix->optlvl = atoi(optarg);
             break;
         case 's':
