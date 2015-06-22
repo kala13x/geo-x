@@ -20,8 +20,8 @@
 const char* lib_version()
 {
     static char str[128];
-    sprintf(str, "%d.%d ბილდი %d (%s)", 
-        VERSION_MAX, VERSION_MIN, BUILD_NUMBER, __DATE__);
+    sprintf(str, "%d.%d.%d ბილდი %d (%s)", VERSION_MAX, 
+        VERSION_MID, VERSION_MIN, BUILD_NUMBER, __DATE__);
 
     return str;
 }
@@ -35,8 +35,8 @@ const char* lib_version()
 const char* lib_version_short()
 {
     static char str[128];
-    sprintf(str, "%d.%d.%d", 
-        VERSION_MAX, VERSION_MIN, BUILD_NUMBER);
+    sprintf(str, "%d.%d.%d-%d", 
+        VERSION_MAX, VERSION_MID, VERSION_MIN, BUILD_NUMBER);
 
     return str;
 }
@@ -49,9 +49,9 @@ const char* lib_version_short()
  */
 void greet(char *p_name)
 {
-    printf("======================================================\n");
+    printf("=======================================================\n");
     printf("%s ვერსია: %s\n", p_name, lib_version());
-    printf("======================================================\n");
+    printf("=======================================================\n");
 }
 
 
@@ -61,10 +61,11 @@ void greet(char *p_name)
  */
 void usage(char *fname) 
 {
-    printf("\nგამოყყენების წესები: %s [-i <ფაილი>] [-o <ფაილი>] [-s] [-h]\n", fname);
+    printf("\nგამოყყენების წესები: %s [-i <ფაილი>] [-o <ფაილი>] [-g <რიცხვი>] [-s] [-h]\n", fname);
     printf("წესების განმარტება:\n");
     printf("   -i <ფაილი>      # საწყისი კოდის ფაილის სახელი\n");
     printf("   -o <ფაილი>      # დაკომპლირებული/გამშვები ფაილის სახელი\n");
+    printf("   -g <რიცხვი>     # ოპტიმიზაციის დონე (1, 2, 3)\n");
     printf("   -s              # შეინახე C ენაში გადათარგმნილი ფაილი\n");
     printf("   -h              # დაბეჭდე ვერსია და გამოყენების წესები\n");
     printf("\n");

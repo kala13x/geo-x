@@ -11,6 +11,7 @@
 #include "../utils/stdinc.h"
 #include "../utils/strops.h"
 #include "../utils/errex.h"
+#include "../utils/color.h"
 #include "../utils/slog.h"
 #include "../utils/files.h"
 
@@ -24,6 +25,7 @@
 typedef struct {
     char input[PATH_MAX];
     char output[PATH_MAX];
+    short optlvl;
     short save_out;
 } UserInputX;
 
@@ -37,6 +39,7 @@ void init_uix(UserInputX *uix)
     bzero(uix->input, sizeof(uix->input));
     bzero(uix->output, sizeof(uix->output));
     strcpy(uix->output, "output");
+    uix->optlvl = 0;
     uix->save_out = 0;
 }
 
@@ -48,13 +51,16 @@ void init_uix(UserInputX *uix)
 static int parse_arguments(int argc, char *argv[], UserInputX *uix)
 {
     int c;
-    while ( (c = getopt(argc, argv, "i:o:s1:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "i:o:l:s1:h1")) != -1) {
         switch (c) {
         case 'i':
             strcpy(uix->input, optarg);
             break;
         case 'o':
             strcpy(uix->output, optarg);
+            break;
+        case 'l':
+            uix->optlvl = atoi(optarg);
             break;
         case 's':
             uix->save_out = 1;
@@ -133,7 +139,7 @@ int main(int argc, char *argv[])
     remove(out);
 
     /* Loop in file line by line */
-    slog(0, SLOG_INFO, "მიმდინარეობს კომპილაცია '%s' --> '%s'", 
+    slog(0, SLOG_NONE, "[%s] '%s' > '%s'", strclr(1, "კომპილაცია"), 
         uix.input, uix.output);
     
     while ((read = getline(&line, &len, fp)) != -1)
@@ -153,8 +159,13 @@ int main(int argc, char *argv[])
     if (line) free(line);
     fclose(fp);
 
-    /* Create recept and compile */
-    sprintf(recept, "gcc -o %s %s", uix.output, out);
+    /* Create recept */
+    if (uix.optlvl) 
+        sprintf(recept, "gcc -O%d -o %s %s -w", uix.optlvl, uix.output, out);
+    else
+        sprintf(recept, "gcc -o %s %s -w", uix.output, out);
+
+    /* Run recept */
     system(recept);
     
     /* Remove output */

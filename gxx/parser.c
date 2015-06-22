@@ -13,23 +13,7 @@
 
 /* Local includes */
 #include "stdinc.h"
-#include "mdefs.h"
-
-#define KEYMAP_SIZE 33
-
-
-/* Full georgian alphabet keymap */
-static char *geo_keymap[KEYMAP_SIZE] = {"ა", "ბ", "გ", "დ", "ე", "ვ", "ზ", "თ", "ი", 
-                                        "კ", "ლ", "მ", "ნ", "ო", "პ", "ჟ", "რ", 
-                                        "ს", "ტ", "უ", "ფ", "ქ", "ღ", "ყ", "შ", 
-                                        "ჩ", "ც", "ძ", "წ", "ჭ", "ხ", "ჯ", "ჰ"};
-
-
-/* English values for geo keymap */
-static char *en_keymap[KEYMAP_SIZE] = {"a", "b", "g", "d", "e", "v", "z", "th", "i",
-                                        "k", "l", "m", "n", "o", "p", "zh", "r",
-                                        "s", "t", "u", "f", "q", "gh", "y", "sh",
-                                        "ch", "c", "dz", "w", "wh", "x", "j", "h"};
+#include "keymap.h"
 
 
 /*
@@ -143,7 +127,7 @@ char* parse_functions(char * line)
     char *out;
 
     /* Check valid line */
-    if (strsrc(line, "ფუნქცია") <= 0 || strsrc(line, "ცარიელი") > 0)
+    if (strsrc(line, "ფუნქცია") <= 0 || strsrc(line, GX_VOID) > 0)
         return line;
 
     strcpy(getline, line);
@@ -172,47 +156,37 @@ char* parse_reserved(char * line)
 {
     static char *out = NULL;
 
-    /* Defs/Incs */
-    out = strrep(line, GX_INCLUDE, "#include");
-    out = strrep(out, GX_DEFINE, "#define");
+    char *quote, *lstart, *lend;
+    static char retline[LINE_MAX];
+    int i;
 
-    /* Opers */
-    out = strrep(out, GX_ELSE_IF, "else if");
-    out = strrep(out, GX_FOREACH, "foreach");
-    out = strrep(out, GX_WHILE, "while");
-    out = strrep(out, GX_BREAK, "break");
-    out = strrep(out, GX_ELSE, "else");
-    out = strrep(out, GX_EQUAL, "==");
-    out = strrep(out, GX_GIVEVALUE, "=");
-    out = strrep(out, GX_FOR, "for");
-    out = strrep(out, GX_DO, "do");
-    out = strrep(out, GX_AS, "as");
-    out = strrep(out, GX_IF, "if");
+    /* Check correct line */
+    if (strsrc(line, "\"") > 0) 
+    {
+        /* Tokenize quotes */
+        lstart = strtok(line, "\"");
+        quote = strtok(NULL, "\"");
+        lend = strtok(NULL, "\"");
 
-    /* Types */
-    out = strrep(out, GX_UNSIGNED, "unsigned");
-    out = strrep(out, GX_SIGNED, "signed");
-    out = strrep(out, GX_DOUBLE, "double");
-    out = strrep(out, GX_STRING, "char*");
-    out = strrep(out, GX_SHORT, "short");
-    out = strrep(out, GX_LONG, "long");
-    out = strrep(out, GX_INT, "int");
+        /* Translate start part */
+        for(i = 0; i < WORLDMAP_SIZE; i++)
+            lstart = strrep(lstart, gx_world_map[i], gxc_world_map[i]);
 
-    /* Others */
-    out = strrep(out, GX_TYPEDEF, "typedef");
-    out = strrep(out, GX_STRUCT, "struct");
-    out = strrep(out, GX_MAIN, "main");
-    out = strrep(out, GX_VOID, "void");
-    out = strrep(out, GX_NULL, "NULL");
-    out = strrep(out, GX_EXIT, "exit");
-    out = strrep(out, GX_FUNCTION, "");
+        /* Translate end part */
+        for(i = 0; i < WORLDMAP_SIZE; i++)
+            lend = strrep(lend, gx_world_map[i], gxc_world_map[i]);
 
-    /* Returns */
-    out = strrep(out, GX_RETURN, "return");
-    out = strrep(out, GX_RETINT, "int");
-    out = strrep(out, GX_RETSTRING, "string");
-    out = strrep(out, GX_RETDOUBLE, "double");
-    out = strrep(out, GX_RETVOID, "void");
+        /* Join start, quote and end */
+        sprintf(retline, "%s\"%s\"%s", lstart, quote, lend);
+    }
+    else 
+    {
+        /* Translate each key in alphabet */
+        for(i = 0; i < WORLDMAP_SIZE; i++)
+            line = strrep(line, gx_world_map[i], gxc_world_map[i]);
 
-    return out;
+        strcpy(retline, line);
+    }
+
+    return retline;
 }
