@@ -94,7 +94,7 @@ char* parse_includes(char * line)
     char getline[MAXMSG];
 
     /* Check valid line */
-    if (strsrc(line, "შემოიღე") <= 0)
+    if (strsrc(line, GX_INCLUDE) <= 0)
         return line;
 
     /* Get include */
