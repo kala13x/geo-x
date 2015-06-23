@@ -13,6 +13,14 @@ extern "C" {
 #endif
 
 
+/* 
+ * path_exists - Function checks path and returns 1 if 
+ * it exists, otherwise Function returns 0. Argument
+ * path is directory or file path which we want to check.
+ */
+int path_exists(char *path);
+
+
 /*
  * create_directory - Recursively create directory. Argument dir is 
  * directory path. Function checks directory path and if directory 

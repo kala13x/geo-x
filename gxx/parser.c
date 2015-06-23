@@ -8,7 +8,10 @@
 
 
 /* Util includes */
-#include "../utils/strops.h" 
+#include "../utils/strops.h"
+#include "../utils/files.h"
+#include "../utils/errex.h"
+#include "../utils/color.h"
 #include "../utils/slog.h"
 
 /* Local includes */
@@ -91,6 +94,7 @@ char* parse_includes(char * line)
     char *out = NULL;
     char *inc = NULL;
     char include[64];
+    char path[PATH_MAX];
     char getline[MAXMSG];
 
     /* Check valid line */
@@ -102,9 +106,26 @@ char* parse_includes(char * line)
     inc = strtok(line, " ");
     ret = strtok(NULL, " ");
 
+    /* Clear values */
+    bzero(path, sizeof(path));
+    bzero(include, sizeof(include));
+
     /* Translate to english */
     out = translate_alphabet(ret);
-    bzero(include, sizeof(include));
+
+    /* Create include path */
+    sprintf(path, "/usr/local/include/%s.h", out);
+    if (!path_exists(path)) 
+    {
+        sprintf(path, "/usr/include/%s.h", out);
+
+        /* Check path */
+        if (!path_exists(path)) 
+            exit_prog(1, "სათაური '%s'-სთვის ვერ მოიძებნა (%s)", 
+                ret, strclr(2, "შემოიღე %s", ret));
+    }
+
+    /* Create include key */
     sprintf(include, "<%s.h>", out);
 
     /* Reolace */

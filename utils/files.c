@@ -11,16 +11,31 @@
 #include "files.h"
 
 
+/* 
+ * path_exists - Function checks path and returns 1 if 
+ * it exists, otherwise Function returns 0. Argument
+ * path is directory or file path which we want to check.
+ */
+int path_exists(char *path)
+{
+    struct stat st = {0};
+
+    if (stat(path, &st) == -1) 
+        return 0;
+
+    return 1;
+}
+
+
 /*
- * create_directory - Recursively create directory. Argument dir is 
- * directory path. Function checks directory path and if directory 
+ * create_directory - Recursively create directory. Argument dir is
+ * directory path. Function checks directory path and if directory
  * doesnot exsists, function creates it. On success return value is
  * 1, otherwise function returns 0 if there is something wrong.
  */
 int create_directory(char* dir)
 {
     /* Used variables */
-    struct stat st = {0};
     char tmp[256];
     char *p = NULL;
     size_t len;
@@ -31,14 +46,14 @@ int create_directory(char* dir)
     if(tmp[len - 1] == '/') tmp[len - 1] = 0;
 
     /* Start creation recursively */
-    for(p = tmp + 1; *p; p++) 
+    for(p = tmp + 1; *p; p++)
     {
-        if(*p == '/') 
+        if(*p == '/')
         {
             *p = 0;
-            if (stat(tmp, &st) == -1) 
+            if (!path_exists(tmp))
             {
-                if (mkdir(tmp, 0777) < 0) 
+                if (mkdir(tmp, 0777) < 0)
                     return 0;
             }
 
@@ -47,7 +62,7 @@ int create_directory(char* dir)
     }
 
     /* Create final directory */
-    if (stat(tmp, &st) == -1) 
+    if (!path_exists(tmp))
     {
         if (mkdir(tmp, 0777) < 0)
             return 0;
