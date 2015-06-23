@@ -15,6 +15,7 @@
 #define GX_VOID "ცარიელი" 
 #define GX_NULL "არაფერი"
 #define GX_SHORT "მოკლე"
+#define GX_CHAR "ნიშანი"
 #define GX_LONG "გრძელი"
 #define GX_INT "რიცხვი"
 
@@ -35,9 +36,10 @@
 #define GX_FUNCTION "ფუნქცია"
 #define GX_GIVEVALUE "გახადე"
 #define GX_INCLUDE "შემოიღე" 
-#define GX_MAIN "მთავარი" 
+#define GX_MAIN "მთავარი"
 #define GX_DEFINE "აღწერე"
 #define GX_EXIT "მოკვდი"
+#define GX_TIME "დრო"
 
 /* Returns */
 #define GX_RETSTRING "სტრიქონს"
@@ -46,8 +48,9 @@
 #define GX_RETVOID "არაფერს"
 #define GX_RETINT "რიცხვს"
 #define GX_EQUAL "არის"
+#define GX_NO "არაა"
 
 /* Limits */
-#define WORLDMAP_SIZE 32
+#define WORLDMAP_SIZE 35
 #define KEYMAP_SIZE 33
 #define MAXMSG 4096

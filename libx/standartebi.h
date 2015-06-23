@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define MAXMSG 8196
 
@@ -36,7 +37,6 @@ void dabewhde(const char *msg, ...)
     printf("%s\n", string);
 }
 
-int gadaiyvane_ricxvshi(char *string) 
-{
-	return atoi(string);
-}
+/* Legacy functions */
+int gadaiyvane_ricxvshi(char *string) { return atoi(string); }
+char * waikithxe_ghilaki() { return getchar(); }

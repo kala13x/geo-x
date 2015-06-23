@@ -26,14 +26,14 @@ static char *en_keymap[KEYMAP_SIZE] = {"a", "b", "g", "d", "e", "v", "z", "th", 
 
 /* Gx worlds map */
 static char *gx_world_map[WORLDMAP_SIZE] = {GX_INCLUDE, GX_DEFINE, GX_ELSE_IF, GX_ELSE, 
-            GX_IF, GX_WHILE, GX_FOR, GX_FOREACH, GX_DO, GX_BREAK, GX_GIVEVALUE, 
-            GX_EQUAL, GX_AS, GX_INT, GX_LONG, GX_SHORT, GX_STRING, GX_DOUBLE, GX_SIGNED, 
-            GX_UNSIGNED, GX_TYPEDEF, GX_STRUCT, GX_MAIN, GX_VOID, GX_NULL, GX_EXIT, 
-            GX_FUNCTION, GX_RETURN, GX_RETINT, GX_RETSTRING, GX_RETDOUBLE, GX_RETVOID};
+            GX_IF, GX_WHILE, GX_FOR, GX_FOREACH, GX_DO, GX_BREAK, GX_GIVEVALUE, GX_EQUAL, 
+            GX_AS, GX_INT, GX_LONG, GX_SHORT, GX_STRING, GX_CHAR, GX_DOUBLE, GX_SIGNED, 
+            GX_UNSIGNED, GX_TYPEDEF, GX_STRUCT, GX_MAIN, GX_VOID, GX_TIME, GX_NULL, GX_EXIT, 
+            GX_FUNCTION, GX_RETURN, GX_RETINT, GX_RETSTRING, GX_RETDOUBLE, GX_RETVOID, GX_NO};
 
 
 /* C worlds map */
 static char *gxc_world_map[WORLDMAP_SIZE] = {"#include", "#define", "else if", "else", "if", 
             "while", "for", "foreach", "do", "break", "=", "==", "as", "int", "long", "short", 
-            "char*", "double", "signed", "unsigned", "typedef", "struct", "main", "void", 
-            "NULL", "exit(0)", "", "return", "int", "char*", "double", "void"};
+            "char*", "char", "double", "signed", "unsigned", "typedef", "struct", "main", "void", 
+            "time", "NULL", "exit(0)", "", "return", "int", "char*", "double", "void", "!="};
