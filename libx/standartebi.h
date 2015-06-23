@@ -38,5 +38,5 @@ void dabewhde(const char *msg, ...)
 }
 
 /* Legacy functions */
-int gadaiyvane_ricxvshi(char *string) { return atoi(string); }
+int argumenti_gadayvanili_ricxvshi(char *string) { return atoi(string); }
 char * wakithxuli_ghilaki() { return getchar(); }
