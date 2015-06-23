@@ -39,4 +39,4 @@ void dabewhde(const char *msg, ...)
 
 /* Legacy functions */
 int gadaiyvane_ricxvshi(char *string) { return atoi(string); }
-char * waikithxe_ghilaki() { return getchar(); }
+char * wakithxuli_ghilaki() { return getchar(); }
