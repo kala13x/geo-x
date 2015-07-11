@@ -175,8 +175,6 @@ char* parse_functions(char * line)
  */
 char* parse_reserved(char * line) 
 {
-    static char *out = NULL;
-
     char *quote, *lstart, *lend;
     static char retline[LINE_MAX];
     int i;

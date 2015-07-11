@@ -58,13 +58,11 @@ char *strrep(char *orig, char *rep, char *with)
     char *ins;
     char *tmp;
 
-    if (!orig)
-        return NULL;
-    if (!rep)
-        rep = "";
+    /* Initialize variables */
+    if (!orig) return NULL;
+    if (!rep) rep = "";
     len_rep = strlen(rep);
-    if (!with)
-        with = "";
+    if (!with) with = "";
     len_with = strlen(with);
 
     ins = orig;
@@ -72,6 +70,7 @@ char *strrep(char *orig, char *rep, char *with)
         ins = tmp + len_rep;
     }
 
+    /* Alocate string buffer size */
     tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
 
     if (!result)
