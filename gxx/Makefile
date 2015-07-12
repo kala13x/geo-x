@@ -1,4 +1,4 @@
-CFLAGS = -g -O2 -Wall -I../utils
+CFLAGS = -g -O2 -Wall -I../utils -Wno-unused-result -Wno-unused-but-set-variable
 LIB = ../utils/utils.a
 OBJ = gxx.o parser.o info.o
 
